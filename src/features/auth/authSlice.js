@@ -10,13 +10,13 @@ const initialState = {
   error: "",
 };
 
-export const createUser = createAsyncThunk(
-  "auth/createUser",
-  async ({ email, password }, thunkAPI) => {
-    const data = await createUserWithEmailAndPassword(auth, email, password);
-    return data.user.email;
-  }
-);
+// export const createUser = createAsyncThunk(
+//   "auth/createUser",
+//   async ({ email, password }, thunkAPI) => {
+//     const data = await createUserWithEmailAndPassword(auth, email, password);
+//     return data.user.email;
+//   }
+// );
 
 const authSlice = createSlice({
   name: "auth",
