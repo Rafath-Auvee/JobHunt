@@ -5,6 +5,8 @@ import auth from "./firebase/firebase.config";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./features/auth/authSlice";
+import toast, { Toaster } from "react-hot-toast";
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -15,6 +17,7 @@ function App() {
   });
   return (
     <>
+      <Toaster />
       <RouterProvider router={routes} />
     </>
   );

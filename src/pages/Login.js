@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
 import { loginUser } from "../features/auth/authSlice";
 import { googleLogin } from "./../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, email } = useSelector((state) => state.auth);
+  const { isLoading, email, isError, error } = useSelector(
+    (state) => state.auth
+  );
 
   const onSubmit = ({ email, password }) => {
     console.log({ email, password });
@@ -21,12 +24,17 @@ const Login = () => {
     dispatch(googleLogin());
   };
 
-
   useEffect(() => {
     if (!isLoading && email) {
       navigate("/");
     }
   }, [email, isLoading]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error);
+    }
+  }, [isError, error]);
 
   return (
     <div className="flex h-screen items-center">
@@ -81,6 +89,15 @@ const Login = () => {
                 Sign in with Google
               </button>
             </div>
+            {/* {isError && (
+              <>
+                <p className="my-3 ">
+                  <span className="text-red-700 font-extrabold hover:underline cursor-pointer">
+                    {error}
+                  </span>
+                </p>
+              </>
+            )} */}
           </form>
         </div>
       </div>

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../features/auth/authSlice";
+import { googleLogin } from "./../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Signup = () => {
   const { handleSubmit, register, reset, control } = useForm();
   const password = useWatch({ control, name: "password" });
@@ -12,7 +14,19 @@ const Signup = () => {
   const [disabled, setDisabled] = useState(true);
   const dispatch = useDispatch();
 
+  const { isLoading, email, isError, error } = useSelector(
+    (state) => state.auth
+  );
+
+  const handleGoogleLogin = () => {
+    console.log(googleLogin());
+    dispatch(googleLogin());
+  };
+
   useEffect(() => {
+    // if (isError) {
+    //   toast.error({ error }, {id : "SignUp"});
+    // }
     if (
       password !== undefined &&
       password !== "" &&
@@ -24,11 +38,19 @@ const Signup = () => {
     } else {
       setDisabled(true);
     }
+    // [password, confirmPassword, isError, error]
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error);
+    }
+  }, [isError, error]);
 
   const onSubmit = ({ email, password }) => {
     console.log({ email, password });
     dispatch(createUser({ email: email, password, password }));
+    navigate("/");
   };
 
   return (
@@ -94,6 +116,13 @@ const Signup = () => {
                   </span>
                 </p>
               </div>
+              <button
+                onClick={() => handleGoogleLogin()}
+                type="button"
+                className="font-bold text-white py-3 rounded-full bg-orange-500 w-full"
+              >
+                Sign in with Google
+              </button>
             </div>
           </form>
         </div>
