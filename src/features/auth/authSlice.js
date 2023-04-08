@@ -35,6 +35,13 @@ export const googleLogin = createAsyncThunk("auth/googleLogin", async () => {
   return data.user.email;
 });
 
+export const getUser = createAsyncThunk("auth/getUser", async (email) => {
+  const res = await fetch(`${process.env.REACT_APP_DEV_URL}/user/${email}`);
+  const data = await res.json();
+  console.log(data);
+  return data;
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -98,6 +105,23 @@ const authSlice = createSlice({
         state.email = payload;
       })
       .addCase(googleLogin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error.message;
+        state.email = "";
+      })
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = "";
+      })
+      .addCase(getUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.error = "";
+        state.user = payload;
+      })
+      .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
