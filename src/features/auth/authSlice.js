@@ -29,14 +29,11 @@ export const loginUser = createAsyncThunk(
     return data.user.email;
   }
 );
-export const googleLogin = createAsyncThunk(
-  "auth/googleLogin",
-  async () => {
-    const provider = new GoogleAuthProvider();
-    const data = await signInWithPopup(auth, provider);
-    return data.user.email;
-  }
-);
+export const googleLogin = createAsyncThunk("auth/googleLogin", async () => {
+  const provider = new GoogleAuthProvider();
+  const data = await signInWithPopup(auth, provider);
+  return data.user.email;
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -47,6 +44,9 @@ const authSlice = createSlice({
     },
     setUser: (state, { payload }) => {
       state.email = payload;
+      state.isLoading = false;
+    },
+    toggleLoading: (state) => {
       state.isLoading = false;
     },
   },
@@ -106,6 +106,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setUser } = authSlice.actions;
+export const { logout, setUser, toggleLoading } = authSlice.actions;
 
 export default authSlice.reducer;
