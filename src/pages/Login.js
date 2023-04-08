@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
 import { loginUser } from "../features/auth/authSlice";
+import { googleLogin } from "./../features/auth/authSlice";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ const Login = () => {
     console.log({ email, password });
     dispatch(loginUser({ email, password }));
   };
+
+  const handleGoogleLogin = () => {
+    console.log(googleLogin());
+    dispatch(googleLogin());
+  };
+
 
   useEffect(() => {
     if (!isLoading && email) {
@@ -66,6 +73,13 @@ const Login = () => {
                   </span>
                 </p>
               </div>
+              <button
+                onClick={() => handleGoogleLogin()}
+                type="button"
+                className="font-bold text-white py-3 rounded-full bg-orange-500 w-full"
+              >
+                Sign in with Google
+              </button>
             </div>
           </form>
         </div>
