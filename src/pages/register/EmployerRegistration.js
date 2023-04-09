@@ -11,7 +11,12 @@ const EmployerRegistration = () => {
     user: { email },
   } = useSelector((state) => state.auth);
   // console.log(useremail });
-  const { handleSubmit, register, control } = useForm();
+  const { handleSubmit, register, control } = useForm({
+    defaultValues: {
+      email,
+    },
+  });
+  console.log("🚀 ~ file: EmployerRegistration.js:18 ~ email:", email);
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
   const [postUser, { isLoading, isError }] = useRegisterMutation();
@@ -46,7 +51,7 @@ const EmployerRegistration = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    postUser({ ...data, email: email.email, role: "employer" });
+    postUser({ ...data, role: "employer" });
   };
 
   return (
@@ -80,7 +85,14 @@ const EmployerRegistration = () => {
             <label className="mb-2" htmlFor="email">
               Email
             </label>
-            <input type="email" id="email" disabled />
+            <input
+              className="cursor-not-allowed"
+              type="email"
+              id="email"
+              disabled
+              placeholder={email}
+              {...register("email")}
+            />
           </div>
           <div className="flex flex-col w-full max-w-xs">
             <h1 className="mb-3">Gender</h1>

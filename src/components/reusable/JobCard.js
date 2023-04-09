@@ -2,9 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const JobCard = ({ jobData }) => {
+  // console.log("🚀 ~ file: JobCard.js:5 ~ JobCard ~ jobData:", jobData)
+  
   const navigate = useNavigate();
   const { _id, position, companyName, location, employmentType } =
-    jobData || {};
+  jobData || {};
+  // console.log("🚀 ~ file: JobCard.js:9 ~ JobCard ~ _id, position, companyName, location, employmentType:", _id, position, companyName, location, employmentType)
 
   return (
     <div
