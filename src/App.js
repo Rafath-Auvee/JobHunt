@@ -13,7 +13,7 @@ function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
-        dispatch(setUser(user));
+        dispatch(getUser(user.email));
       } else {
         dispatch(toggleLoading());
       }

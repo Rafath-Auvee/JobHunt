@@ -5,7 +5,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
-  const { email, isLoading } = useSelector((state) => state.auth);
+  const {
+    user: { email },
+    isLoading,
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
