@@ -2,9 +2,14 @@ import React from "react";
 import { useJobByIdQuery } from "../features/job/jobApi";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useApplyMutation } from "../features/job/jobApi";
 const JobDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const { data, isLoading, isError } = useJobByIdQuery(id);
   // console.log(data?.data);
   const {
@@ -23,6 +28,26 @@ const JobDetails = () => {
     _id,
   } = data?.data || {};
 
+  const [apply] = useApplyMutation();
+
+  const handleApply = () => {
+    if (user.role === "employer") {
+      toast.error("You need a candidate accout to apply ");
+    }
+    if (user.role === "") {
+      navigate("/register");
+      toast.error("You need a candidate accout to apply ");
+      return;
+    }
+    const data = {
+      userId: user._id,
+      email: user.email,
+      jobId: _id,
+    };
+    console.log(data);
+    apply(data);
+  };
+
   return (
     <div className="pt-14 grid grid-cols-12 gap-5 mx-28">
       <div className="col-span-9 mb-10">
@@ -32,7 +57,11 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            <button className="btn">Apply</button>
+            {user.role !== "employer" && (
+              <button onClick={() => handleApply()} className="btn">
+                Apply
+              </button>
+            )}
           </div>
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
@@ -74,13 +103,13 @@ const JobDetails = () => {
           </div>
         </div>
         <hr className="my-5" />
-        {/* <div>
+        <div>
           <div>
             <h1 className="text-xl font-semibold text-primary mb-5">
               General Q&A
             </h1>
             <div className="text-primary my-2">
-              {queries.map(({ question, email, reply, id }) => (
+              {queries?.map(({ question, email, reply, id }) => (
                 <div>
                   <small>{email}</small>
                   <p className="text-lg font-medium">{question}</p>
@@ -117,7 +146,7 @@ const JobDetails = () => {
               </button>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="col-span-3">
         <div className="rounded-xl bg-primary/10 p-5 text-primary space-y-5">

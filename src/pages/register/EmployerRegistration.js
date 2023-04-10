@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
 import { useRegisterMutation } from "../../features/auth/authApi";
 import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 const EmployerRegistration = () => {
   const [countries, setCountries] = useState([]);
@@ -52,6 +53,8 @@ const EmployerRegistration = () => {
   const onSubmit = (data) => {
     console.log(data);
     postUser({ ...data, role: "employer" });
+    toast.succes("Your Employer Resigtration Successful");
+    navigate("/jobs");
   };
 
   return (
