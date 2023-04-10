@@ -26,9 +26,9 @@ const JobDetails = () => {
   return (
     <div className="pt-14 grid grid-cols-12 gap-5 mx-28">
       <div className="col-span-9 mb-10">
-        <div className="h-80 rounded-xl overflow-hidden">
+        {/* <div className="h-80 rounded-xl overflow-hidden">
           <img className="h-full w-full object-cover" src={meeting} alt="" />
-        </div>
+        </div> */}
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
